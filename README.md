@@ -10,8 +10,8 @@ The Intervue is designed to facilitate real-time code collaboration during inter
 - **Room Management**: Create and manage interview rooms efficiently.
 ## 2. System Requirements
 ### Hardware Requirements
-- **Minimum Specifications**: [Details here]
-- **Recommended Specifications**: [Details here]
+- **Minimum Specifications**: 
+- **Recommended Specifications**: 
 ### Software Requirements
 - **Node.js**
 - **MongoDB**
@@ -20,15 +20,15 @@ The Intervue is designed to facilitate real-time code collaboration during inter
 ### System Design
 A high-level overview of the platform's architecture, including:
 
-- **Frontend**: [Details here]
-- **Backend**: [Details here]
-- **Database**: [Details here]
+- **Frontend**: 
+- **Backend**: 
+- **Database**: 
 - **Third-party Integrations**: Google Meet, Google OAuth
 ### Technologies Used
-- **Node.js**: [Role in the platform]
-- **MongoDB**: [Role in the platform]
-- **Socket.io**: [Role in the platform]
-- **Passport.js**: [Role in the platform]
+- **Node.js**: 
+- **MongoDB**: 
+- **Socket.io**: 
+- **Passport.js**: 
 ## 4. Installation and Setup
 ### Prerequisites
 - Install Node.js
@@ -57,19 +57,19 @@ Steps to launch and join Google Meet video calls.
 
 ## 6. API Documentation
 ### Endpoints
-- **URL**: [Endpoint URL]
-- **HTTP Method**: [GET/POST/etc.]
-- **Request Parameters/Body**: [Details here]
-- **Example Responses**: [Details here]
+- **URL**: 
+- **HTTP Method**: 
+- **Request Parameters/Body**: 
+- **Example Responses**: 
 ### Socket Events
-- **codeChange**: [Event details]
-- **joinRoom**: [Event details]
-- **leaveRoom**: [Event details]
+- **codeChange**: 
+- **joinRoom**: 
+- **leaveRoom**: 
 ## 7. Database Design
 ### Schemas
-- **Users**: [Field names, types, relationships]
-- **Rooms**: [Field names, types, relationships]
-- **Sessions**: [Field names, types, relationships]
+- **Users**: 
+- **Rooms**: 
+- **Sessions**: 
 ### Indexes
 - [Details on any special indexes]
 ## 8. Security
