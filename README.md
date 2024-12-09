@@ -88,11 +88,11 @@ Steps taken to secure user data, such as encrypting sensitive information and us
 - [Frequently asked questions for users, interviewers, and administrators]
 ## 10. Contributors and Acknowledgments
 ### Contributors
-- [List of contributors]
+- 
 ### Acknowledgments
-- [Acknowledgment of libraries, frameworks, and third-party services used]
+- 
 ## 11. Licensing
-Details about the license under which the platform is released (e.g., MIT, Apache).
+
 
 
 
