@@ -1,0 +1,134 @@
+<script src="/socket.io/socket.io.js"></script> <!-- Socket.IO -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/edit/closebrackets.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/dracula.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/java/java.min.js"></script>
+<h1>Welcome to Room</h1>
+<p>Created by: <%= locals.createdBy %>
+</p>
+
+<p>Share this link with your friends to join:
+    <a href="<%= locals.roomLink %>" target="_blank">
+        <%= locals.roomLink %>
+    </a>
+</p>
+<button onclick="copyToClipboard('<%= locals.roomLink %>')">Copy Link</button>
+
+
+
+<div class="row m-3">
+    <div class="col">
+        <div class="d-flex justify-content-between mb-2 bg-dark rounded p-2">
+            <div class="col-12 w-25">
+                <label class="visually-hidden" for="inlineFormCustomSelect">Preference</label>
+                <select class="form-select mr-sm-2" id="inlineFormCustomSelect">
+                    <option selected>Choose...</option>
+                    <option value="Java">Java</option>
+                    <option value="Cpp">C++</option>
+                    <option value="Python">Python</option>
+                </select>
+            </div>
+            <div>
+                <button id="run" class="btn btn-success">Run Code <i class="bi bi-play-fill"></i></button>
+            </div>
+        </div>
+        <textarea id="editor" class="form-control rounded" aria-label="Code editor" style="cursor: text;"></textarea>
+    </div>
+    <div class="col d-flex flex-column rounded bg-dark px-4">
+        <div class="h-50">
+            <label for="Input" class="text-light mt-4 mb-2">
+                <h4>Input</h4>
+            </label>
+            <textarea type="text" id="input" class="form-control h-75"></textarea>
+        </div>
+        <div class="h-50">
+            <label for="Output" class="text-light mt-2 mb-2">
+                <h4>Output</h4>
+            </label>
+            <textarea type="text" id="output" class="form-control h-75"></textarea>
+        </div>
+    </div>
+</div>
+<script>
+    const socket = io();
+
+    // Emit join room event
+    socket.emit('joinRoom', '<%= locals.roomId %>');
+
+    // Initialize CodeMirror editor
+    const editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+        mode: "text/x-c++src", // C++ mode
+        theme: "dracula", // Dracula theme
+        lineNumbers: true, // Show line numbers
+        autoCloseBrackets: true, // Auto-close brackets
+    });
+
+    // Set editor size
+    editor.setSize("100%", "500px");
+
+    let isUpdating = false;
+
+    // Detect content changes and emit codeChange event
+    editor.on('change', function () {
+        if (!isUpdating) {
+            socket.emit('codeChange', {
+                roomId: '<%= locals.roomId %>',
+                code: editor.getValue()
+            });
+        }
+    });
+
+    // Listen for code updates from server
+    socket.on('codeUpdate', function (data) {
+        if (data.roomId === '<%= locals.roomId %>') {
+            isUpdating = true;
+            editor.setValue(data.code);
+            isUpdating = false;
+        }
+    });
+
+    // Copy to clipboard function
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Link copied to clipboard!");
+        });
+    }
+
+    const option = document.getElementById("inlineFormCustomSelect")
+    option.addEventListener("change", () => {
+        if (option.value == "Java") {
+            editor.setOption("mode", "text/x-java")
+        } else if (option.value == "Python") {
+            editor.setOption("mode", "text/x-python")
+        } else {
+            editor.setOption("mode", "text/x-c++src")
+        }
+    })
+
+    const input = document.getElementById("input")
+    const output = document.getElementById("output")
+    const run = document.getElementById("run")
+    let code;
+    run.addEventListener("click", async () => {
+        code = {
+            code: editor.getValue(),
+            input: input.value,
+            lang: option.value
+        }
+        const response = await fetch('http://localhost:8000/compile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(code),
+        });
+
+        const result = await response.json();
+        output.value = result.output;
+    })
+</script>
