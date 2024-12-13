@@ -1,8 +1,29 @@
 <form class="dashboard" action="/dashboard/:googleId/create-room" method="POST">
     <div>
         <div>
-            <input id="roomName" type="text" placeholder="Enter room name" required>
+            <input id="roomName" type="text" name="roomName" placeholder="Enter room name" required>
             <button class="btn-submit" type="submit">Create Room</button>
+        </div>
+        <div>
+            <label for="roomCodeInput">Enter Room Code:</label>
+            <input type="text" id="roomCodeInput" placeholder="Enter room code" />
+            <button id="joinRoomBtn">Join Room</button>
+        </div>
+        <div class="rooms-list">
+            <h2>Your Rooms</h2>
+            <% if (userRooms && userRooms.length> 0) { %>
+                <ul>
+                    <% userRooms.forEach(room=> { %>
+                        <li>
+                            <a href="/room/<%= room.roomid %>">
+                                <%= room.roomName %>
+                            </a>
+                        </li>
+                        <% }) %>
+                </ul>
+                <% } else { %>
+                    <p>No rooms created yet. Start by creating a new room.</p>
+                    <% } %>
         </div>
     </div>
     <div>

@@ -3,10 +3,10 @@ const router = express.Router();
 const createRoom = require("../controllers/createRoom.controller.js");
 const { isLoggedIn } = require("../middlewares/checkAuth.js");
 const Room = require("../models/room.model.js");
+const User = require("../models/user.model.js");
 const compiler = require("compilex");
 const options = { stats: true };
 const fs = require('fs');
-// Route to handle the room page
 router.get("/room/:roomid", isLoggedIn, async (req, res) => {
     try {
         const roomId = req.params.roomid;
@@ -14,13 +14,15 @@ router.get("/room/:roomid", isLoggedIn, async (req, res) => {
         const room = await Room.findOne({ roomid: roomId }).populate(
             "createdBy",
             "name email"
-        ); // Populate user data
+        );
 
         if (!room) {
             return res.status(404).send("Room not found");
         }
-
+        const user = await User.findOne({"rooms.roomid": roomId})
         const locals = {
+            roomCode: room.roomCode,
+            roomName: user.rooms[0].roomName,
             title: "Intervue App",
             description: "Open source Intervue app",
             roomId: roomId,
@@ -45,7 +47,7 @@ router.post("/compile", (req, res) => {
         if (lang == "Cpp") {
             const envData = {
                 OS: "linux",
-                cmd: "gcc", // Use g++ for C++ code
+                cmd: "gcc",
                 options: { timeout: 10000 },
             };
         
@@ -71,7 +73,7 @@ router.post("/compile", (req, res) => {
                 });
         } else if (lang == "Java") {
             if (!input) {
-                const envData = { OS: "linux" }; // (Support for Linux in Next version)
+                const envData = { OS: "linux" }; 
                 compiler.compileJava(envData, code, function (data) {
                     if (data.output) {
                         res.send(data);
@@ -80,7 +82,7 @@ router.post("/compile", (req, res) => {
                     }
                 });
             } else {
-                const envData = { OS: "linux" }; // (Support for Linux in Next version)
+                const envData = { OS: "linux" };
                 compiler.compileJavaWithInput(
                     envData,
                     code,
@@ -131,6 +133,39 @@ router.post("/compile", (req, res) => {
         res.send(error);
     }
 });
+
+router.post("/join-room", isLoggedIn, async (req, res) => {
+    try {
+        const { roomCode } = req.body;  
+        const room = await Room.findOne({ roomCode: roomCode });
+        if (!room) {
+            return res.status(404).send("Room not found with this code");
+        }
+
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(401).send("You need to be logged in to join a room");
+        }
+
+        const roomData = {
+            roomid: room.roomid,
+            roomName: room.roomName,
+            roomCode: room.roomCode, 
+        };
+
+        if (!user.rooms.some(r => r.roomid === room.roomid)) {
+            user.rooms.push(roomData);
+            await user.save();
+        }
+
+        res.redirect(`/room/${room.roomid}`);
+
+    } catch (error) {
+        console.error("Error handling room join:", error);
+        res.status(500).send("Error joining room");
+    }
+});
+
 // Route to handle the room creation
 router.post("/dashboard/:googleId/create-room", isLoggedIn, createRoom.room);
 

@@ -25,7 +25,14 @@ const mongoose = require("mongoose")
     createdAt: {
         type: Date,
         default: Date.now()
-    }
+    },
+    rooms: [
+        {
+            roomid: { type: String, required: true },
+            roomName: { type: String },
+            roomCode: { type: String, required: true, unique: true}
+        },
+    ],
  })
 
  module.exports = mongoose.model("User", userSchema)

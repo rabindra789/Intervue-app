@@ -141,18 +141,27 @@ body {
     border-radius: 15px;
 }
 
-.main-room{
+.mainroom-content{
     display: flex;
+    width: 100%;
+}
+
+.main-room{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
 
 .code-editor{
-    width: 70%;
+    width: 100%;
     background-color: #313138;
     color:#718a88;
 }
 
 .inandout{
-    width: 30%;
+    height: 500px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     background-color: #313138;
@@ -178,6 +187,57 @@ body {
 #editor {
     width: 100%;
     height: 80vh;
+}
+
+
+#container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+#waveCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    pointer-events: none; /* So that the canvas does not interfere with other elements */
+    z-index: 0;
+}
+
+.voice-call{
+    margin: 100px 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.button {
+    position: absolute;
+    margin: 20px 60px;
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.button:hover {
+    background-color: #3700b3;
 }
 
 .form-select {
@@ -208,6 +268,48 @@ body {
 }
 
 
+.rooms-list ul li{
+    list-style: none;
+    margin: 40px 0;
+    background-color: white;
+    border: 2px solid blue;
+    border-radius:  0 30px 30px 0 ;
+    margin: 5px;
+    padding: 10px 0;
+    width: 100%;
+}
+
+.rooms-list ul li a{
+    background-color: transparent;
+    border-radius: 30px;
+    margin: 5px;
+    padding: 10px 10rem;
+    width: 100%;
+}
+
+.rooms-list ul li::before {
+    content: counter(list-counter) '. ';
+    counter-increment: list-counter; 
+    position: relative;
+    left: -30px; 
+    top: 50%;
+    transform: translateY(-50%); 
+    width: 20px; 
+    height: 20px;
+    background-color: rgb(165, 130, 130); 
+    border: 2px solid blue;
+    border-radius: 30px 0 0 30px; 
+    text-align: center;
+    line-height: 21px; 
+    font-weight: bold;
+    padding: 12px 10px;
+}
+
+.rooms-list ul {
+    margin: 0px ;
+    counter-reset: list-counter;
+}
+
 ::-webkit-scrollbar{
     display: none;
-}
+}   

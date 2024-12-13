@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
 const Room = require("../models/room.model.js")
 const User = require("../models/user.model.js")
-// In-memory storage for rooms
+
 const rooms = {};
 
-// Function to handle socket connections
+
 exports.handleSocketConnection = (io) => {
     io.on("connection", (socket) => {
         console.log("A user connected:", socket.id);
-        const googleId = req.params.googleId; // Get the user ID from the route parameter
-        const roomId = uuidv4(); // Generate a unique room ID
+        const googleId = req.params.googleId; 
+        const roomId = uuidv4(); 
         console.log(`Room created for user ${googleId}: ${roomId}`);
 
         // User joins a room
@@ -30,7 +30,6 @@ exports.handleSocketConnection = (io) => {
                 socket.to(roomId).emit("code-update", code);
             });
 
-            // Handle disconnection
             socket.on("disconnect", () => {
                 console.log(
                     `User ${socket.id} disconnected from room ${roomId}`
@@ -40,7 +39,6 @@ exports.handleSocketConnection = (io) => {
     });
 };
 
-// Function to handle room creation
 
 exports.room = async (req, res) => {
     try {
@@ -52,8 +50,14 @@ exports.room = async (req, res) => {
         const roomName = req.body.roomName;
         const roomId = uuidv4();
 
+        const generateRoomCode = () => {
+            return Math.random().toString(36).substring(2, 8).toUpperCase();
+        };
+        
+
         const newRoom = new Room({
             roomid: roomId,
+            roomCode: generateRoomCode(),
             roomName: roomName,
             createdBy: user.firstName,
             profileImage: user.profileImage,
@@ -61,6 +65,9 @@ exports.room = async (req, res) => {
         });
 
         await newRoom.save();
+
+        user.rooms.push({ roomid: roomId, roomName: roomName });
+        await user.save();
 
         res.redirect(`/room/${roomId}`);
     } catch (error) {
