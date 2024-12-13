@@ -1,5 +1,11 @@
-<h1>Dashboard</h1>
-<form action="/dashboard/:googleId/create-room" method="POST">
-    <input id="roomName" type="text" placeholder="Enter room name" required>
-    <button type="submit">Create Room</button>
+<form class="dashboard" action="/dashboard/:googleId/create-room" method="POST">
+    <div>
+        <div>
+            <input id="roomName" type="text" placeholder="Enter room name" required>
+            <button class="btn-submit" type="submit">Create Room</button>
+        </div>
+    </div>
+    <div>
+        <img src="/img/create-room.svg" width="600" alt="">
+    </div>
 </form>

@@ -1,16 +1,19 @@
 <div class="container-fluid">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 ">
-        <a href="/dashboard/<%= locals.googleId %>"
-            class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-primary text-decoration-none fw-bold fs-2">
-            Intervue App
+    <header class="main-header">
+        <a href="/dashboard/<%= locals.googleId %>" class="logo-text">
+            <h1>CodeSync</h1>
         </a>
 
 
-        <div class="col-md-3 text-end">
-            <li class="nav-item"><a href="/dashboard/<%= locals.googleId %>" class="nav-link px-2 text-muted">Dashboard</a></li>
-            <li class="nav-item"><a href="/about" class="nav-link px-2 text-muted">About</a></li>
-            <a href="/profile"><img src="<%= locals.profileImage %>" alt="" style="height: 30px; width: 30px;"></a>
+        <ul class="nav">
+            <li><a href="/dashboard/<%= locals.googleId %>" class="nav-link px-2 text-muted">Dashboard</a></li>
+            <li><a href="#" class="nav-link">Features</a></li>
+            <li><a href="/about" class="nav-link px-2 text-muted">About</a></li>
+        </ul>
+        <div class="main-header-button">
+            <a href="#"><img class="profileImage" src="<%= locals.profileImage %>" alt="" style="height: 40px; width: 40px;"></a>
             <a href="/logout" type="button" class="btn btn-outline-primary">Logout</a>
         </div>
+
     </header>
 </div>

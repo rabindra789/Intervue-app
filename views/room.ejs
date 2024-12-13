@@ -8,24 +8,24 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/python/python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/java/java.min.js"></script>
-<h1>Welcome to Room</h1>
-<p>Created by: <%= locals.createdBy %>
-</p>
+<h1>Welcome to <%= locals.createdBy %>'s room</h1>
 
 <p>Share this link with your friends to join:
-    <a href="<%= locals.roomLink %>" target="_blank">
+    <!-- <a href="<%= locals.roomLink %>" target="_blank">
         <%= locals.roomLink %>
-    </a>
+    </a> -->
+    <a onclick="copyToClipboard('<%= locals.roomLink %>')">Copy Link</a>
 </p>
-<button onclick="copyToClipboard('<%= locals.roomLink %>')">Copy Link</button>
 
 
 
-<div class="row m-3">
-    <div class="col">
-        <div class="d-flex justify-content-between mb-2 bg-dark rounded p-2">
+<div class="main-room">
+    <div class="code-editor">
+        <div class="action-bar">
+            <img height="24"
+                    width="24" src="/img/Code.png" alt="">  
             <div class="col-12 w-25">
-                <label class="visually-hidden" for="inlineFormCustomSelect">Preference</label>
+                <label class="visually-hidden" for="inlineFormCustomSelect">Language Preference</label>
                 <select class="form-select mr-sm-2" id="inlineFormCustomSelect">
                     <option selected>Choose...</option>
                     <option value="Java">Java</option>
@@ -34,19 +34,19 @@
                 </select>
             </div>
             <div>
-                <button id="run" class="btn btn-success">Run Code <i class="bi bi-play-fill"></i></button>
+                <button id="run" class="btn-success">Run Code <i class="bi bi-play-fill"></i></button>
             </div>
         </div>
         <textarea id="editor" class="form-control rounded" aria-label="Code editor" style="cursor: text;"></textarea>
     </div>
-    <div class="col d-flex flex-column rounded bg-dark px-4">
-        <div class="h-50">
+    <div class="inandout">
+        <div class="result">
             <label for="Input" class="text-light mt-4 mb-2">
                 <h4>Input</h4>
             </label>
             <textarea type="text" id="input" class="form-control h-75"></textarea>
         </div>
-        <div class="h-50">
+        <div class="result">
             <label for="Output" class="text-light mt-2 mb-2">
                 <h4>Output</h4>
             </label>
